@@ -1,0 +1,54 @@
+---
+# defaults file for vpncloud
+
+# Name of the network
+##vpncloud_netname: vpncloud-vpn
+vpncloud_netname: netname
+
+# vpncloud_mode can be router, switch, or hub.
+# See https://vpncloud.ddswd.de/docs/tutorials/dial-in/
+vpncloud_mode: router
+
+################################
+# VPN internal network details #
+################################
+
+# vpncloud_vpn_interface is the interface for the vpn
+vpncloud_vpn_type: tun
+
+# vpncloud_vpn_ip has to be set on the host level
+# and will be applied on vpncloud_vpn_interface
+# with the vpncloud_vpn_cidr:
+vpncloud_vpn_cidr: "/24"
+
+# vpncloud_vpn_routes can add routes to flow through the VPN (and remove them on vpncloud down)
+#vpncloud_vpn_routes: []
+#vpncloud_vpn_routes:
+#  - dest:
+#    gateway:
+
+###########################################
+# VPN external network connection details #
+###########################################
+
+# vpncloud_address_family on which vpncloudd will bind.
+# can be ipv4/ipv6/any
+#vpncloud_address_family: any
+
+# vpncloud_control_plane_bind_ip will automatically find a suitable address
+# on which VPN peers can connect to (Default: ip address matching the default route)
+# Traffic from vpncloud is not restricted to this interface, it's
+# only the interface on which vpn peers can connect.
+# Example, if you want vpncloud to be reachable on eth0:
+# vpncloud_control_plane_bind_ip: "{{ ansible_eth0['ipv4']['address'] }}"
+#vpncloud_control_plane_bind_ip: "{{ ansible_default_ipv4.address }}"
+
+#########
+# Other #
+#########
+
+vpncloud_package_state: present
+#vpncloud_key_size: 4096
+
+# OS name for the vpncloud service. You probably shouldn't edit this.
+vpncloud_service_name: vpncloud

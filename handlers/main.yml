@@ -1,0 +1,6 @@
+---
+# handlers file for vpncloud
+- name: Restart Service
+  service:
+    name: "{{ vpncloud_service_name }}@{{ vpncloud_netname }}"
+    state: restarted

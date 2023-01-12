@@ -1,0 +1,31 @@
+---
+# tasks file for vpncloud
+- name: Install vpncloud
+  package:
+    update_cache: "{{ (ansible_os_family == 'debian') | ternary('yes', omit) }}"
+    name: vpncloud
+    state: "{{ vpncloud_package_state }}"
+  tags:
+    - vpncloud_install
+    - install
+
+- name: Ensure vpncloud netname directory exists
+  file:
+    path: "/etc/vpncloud/"
+    recurse: True
+    state: directory
+
+- name: Create base vpncloud configuration
+  template:
+    src: vpncloud.net.j2
+    dest: "/etc/vpncloud/{{ vpncloud_netname }}.net"
+    mode: "0644"
+  notify:
+    - Restart Service
+  tags: connection
+
+- name: Ensure vpncloud is enabled
+  service:
+    name: "{{ vpncloud_service_name }}@{{ vpncloud_netname }}"
+    daemon_reload: yes
+    enabled: yes
